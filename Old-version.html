@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lianne Lim — AI Builder Portfolio</title>
+<style>
+  :root {
+    --color-bg: #000000;
+    --color-text: #f5f5f7;
+    --color-text-secondary: #86868b;
+    --color-text-tertiary: #d2d2d7;
+    --color-nav: rgba(0, 0, 0, 0.7);
+    --color-accent: #0071e3;
+    --color-accent-text: #ffffff;
+    --color-surface: rgba(255, 255, 255, 0.05);
+    --color-border: rgba(255, 255, 255, 0.10);
+    --color-thread: #7c3aed;
+    --gradient-hero: linear-gradient(135deg, #7c3aed 0%, #4338ca 100%);
+    --bg-alt: linear-gradient(180deg, #000000 0%, #1d1d1f 100%);
+    --font-display: -apple-system, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-text: -apple-system, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --max-width: 1080px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.3px; }
+
+  section {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 100px 32px;
+  }
+  section.surface { background: var(--bg-alt); max-width: none; }
+  section.surface > .inner { max-width: var(--max-width); margin: 0 auto; padding: 100px 32px; }
+
+  .narrow { max-width: 640px; margin: 0 auto; text-align: center; }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--color-nav);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  nav .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-brand {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    color: #ffffff;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover { color: #ffffff; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    max-width: none;
+    background: var(--color-bg);
+    padding: 0 32px;
+  }
+  .hero .inner {
+    position: relative;
+    z-index: 1;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    min-height: 76vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  .hero-visual {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-swirl {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(720px, 78vw);
+    height: min(720px, 78vw);
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, rgba(76,29,149,0.28) 0%, rgba(139,92,246,0.55) 18%, rgba(67,56,202,0.3) 38%, rgba(109,40,217,0.6) 58%, rgba(76,29,149,0.28) 78%, rgba(139,92,246,0.55) 96%, rgba(76,29,149,0.28) 100%);
+    filter: blur(55px);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    animation: swirlSpin 20s linear infinite;
+  }
+  @keyframes swirlSpin {
+    0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+    50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.1); }
+    100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+  }
+  .hero-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 68% 66% at 50% 50%, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.93) 48%, rgba(0,0,0,0.55) 74%, rgba(0,0,0,0) 92%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-swirl, .status-dot, .status-dot::after {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: translate(-50%, -50%) !important;
+    }
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 7px 16px 7px 12px;
+    border-radius: 9999px;
+    margin-bottom: 26px;
+  }
+  .status-dot {
+    position: relative;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-thread);
+    flex-shrink: 0;
+    animation: dotBlink 1.6s ease-in-out infinite;
+  }
+  .status-dot::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: var(--color-thread);
+    animation: pulseDot 1.6s ease-out infinite;
+  }
+  @keyframes dotBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+  @keyframes pulseDot {
+    0% { transform: scale(0.4); opacity: 0.55; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+  .hero h1 {
+    font-weight: 800;
+    font-size: clamp(3.2rem, 9vw, 6.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 26px;
+  }
+  .hero .subhead {
+    font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .hero .subhead strong { color: var(--color-text); font-weight: 600; }
+  .hero .title {
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    margin-bottom: 36px;
+  }
+
+  /* ---------- Pill CTA ---------- */
+  .pill-btn {
+    display: inline-block;
+    border-radius: 9999px;
+    padding: 10px 24px;
+    background: var(--color-accent);
+    color: var(--color-accent-text);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  .pill-btn:hover { opacity: 0.85; }
+
+  /* ---------- Section headers ---------- */
+  .section-eyebrow {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-thread);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 3.4vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin-bottom: 44px;
+    color: var(--color-text);
+  }
+  section.surface .section-eyebrow,
+  section.surface .section-title { text-align: left; }
+
+  /* ---------- About ---------- */
+  #about p {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    line-height: 1.5;
+    max-width: 640px;
+  }
+  #about p strong { color: var(--color-text); font-weight: 600; }
+
+  /* ---------- Work ---------- */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .work-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    padding: 32px 28px;
+  }
+  .work-card .work-index {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--color-thread);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .work-card h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--color-text);
+  }
+  .work-card p {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ---------- AI Projects ---------- */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .project-card {
+    position: relative;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    padding: 26px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .project-card:hover {
+    box-shadow: 0 12px 32px -16px rgba(0,0,0,0.5);
+    transform: translateY(-2px);
+  }
+  .project-card.completed {
+    background: linear-gradient(180deg, rgba(124,58,237,0.10) 0%, rgba(67,56,202,0.03) 100%);
+    border-color: rgba(124,58,237,0.4);
+    box-shadow: 0 0 0 1px rgba(124,58,237,0.18), 0 18px 36px -22px rgba(124,58,237,0.55);
+  }
+  .project-card.completed::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 18px;
+    right: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, #7c3aed, transparent);
+  }
+  .project-card.completed:hover {
+    box-shadow: 0 0 0 1px rgba(124,58,237,0.28), 0 20px 44px -20px rgba(124,58,237,0.65);
+  }
+  .project-status {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: 4px 10px;
+    border-radius: 9999px;
+  }
+  .project-status.live {
+    color: #ffffff;
+    background: var(--gradient-hero);
+    border-color: transparent;
+    font-family: var(--font-mono);
+  }
+  .project-status.live::before {
+    content: '✓';
+    font-size: 10px;
+  }
+  .project-card h3 { font-size: 1.05rem; font-weight: 600; color: var(--color-text); }
+  .project-card p.desc {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    flex-grow: 1;
+    line-height: 1.55;
+  }
+  .project-links {
+    display: flex;
+    gap: 18px;
+    margin-top: 4px;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-border);
+  }
+  .project-links button {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-family: var(--font-text);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+  }
+  .project-links button:hover { color: var(--color-thread); text-decoration: underline; }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 100;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 60px 24px;
+    overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: #1d1d1f;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    max-width: 560px;
+    width: 100%;
+    padding: 40px;
+    position: relative;
+    box-shadow: 0 30px 70px -20px rgba(0,0,0,0.6);
+  }
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .modal-eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-thread);
+    margin-bottom: 10px;
+  }
+  .modal-box h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin-bottom: 20px;
+    color: var(--color-text);
+  }
+  .modal-box p.placeholder {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* ---- step timeline ---- */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step-item { display: flex; gap: 16px; }
+  .step-num {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--gradient-hero);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--font-display);
+  }
+  .step-line {
+    width: 1px;
+    flex-grow: 1;
+    background: var(--color-border);
+    margin: 4px 0;
+  }
+  .step-col { display: flex; flex-direction: column; align-items: center; }
+  .step-text { padding-bottom: 28px; padding-top: 4px; font-size: 0.95rem; color: var(--color-text-tertiary); line-height: 1.5; }
+  .step-item:last-child .step-text { padding-bottom: 0; }
+
+  /* ---- documentation: color swatches ---- */
+  .doc-section { margin-bottom: 32px; }
+  .doc-section:last-child { margin-bottom: 0; }
+  .doc-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+    margin-bottom: 14px;
+  }
+  .swatch-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .swatch-chip {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+  .swatch-info { display: flex; flex-direction: column; }
+  .swatch-name { font-size: 12px; font-weight: 600; color: var(--color-text); }
+  .swatch-hex { font-size: 11px; font-family: var(--font-mono); color: var(--color-text-secondary); }
+
+  .type-sample { margin-bottom: 18px; }
+  .type-sample:last-child { margin-bottom: 0; }
+  .type-spec { font-size: 12px; font-family: var(--font-mono); color: var(--color-text-secondary); margin-top: 6px; }
+
+  .principle-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .principle-list li {
+    font-size: 0.9rem;
+    color: var(--color-text-tertiary);
+    line-height: 1.5;
+    padding-left: 18px;
+    position: relative;
+  }
+  .principle-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-thread);
+  }
+
+  .vibe-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .vibe-tag {
+    border: 1px solid var(--color-thread);
+    color: var(--color-thread);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 9999px;
+  }
+
+  .tech-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .tech-list li {
+    font-size: 0.9rem;
+    color: var(--color-text-tertiary);
+    line-height: 1.5;
+    padding-left: 18px;
+    position: relative;
+  }
+  .tech-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-thread);
+  }
+  .prompt-list { display: flex; flex-direction: column; gap: 10px; }
+  .prompt-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--color-text-tertiary);
+    line-height: 1.5;
+  }
+
+  /* ---------- Footer / Contact ---------- */
+  footer { background: var(--bg-alt); }
+  footer .inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 56px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-name { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin-bottom: 6px; color: var(--color-text); }
+  .footer-tagline { font-size: 0.85rem; color: var(--color-text-secondary); }
+  .footer-links { display: flex; gap: 28px; list-style: none; }
+  .footer-links a { color: var(--color-text-secondary); text-decoration: none; font-size: 0.9rem; }
+  .footer-links a:hover { color: var(--color-thread); }
+
+  @media (max-width: 800px) {
+    .work-grid { grid-template-columns: 1fr; }
+    .swatch-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    section, section.surface > .inner { padding: 64px 20px; }
+    footer .inner { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#top" class="nav-brand">Lianne Lim</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#projects">AI Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero" id="top">
+  <div class="hero-visual" aria-hidden="true">
+    <div class="hero-swirl"></div>
+    <div class="hero-vignette"></div>
+  </div>
+  <div class="inner">
+    <div class="status-badge"><span class="status-dot" aria-hidden="true"></span>Status: Actively Building</div>
+    <h1>AI Builder<br>Portfolio</h1>
+    <div class="subhead"><strong>Lianne Lim</strong></div>
+    <div class="title">Product Manager, powered by AI</div>
+    <a href="#projects" class="pill-btn">See the work ↓</a>
+  </div>
+</section>
+
+<section class="surface" id="about">
+  <div class="inner">
+    <div class="section-eyebrow">About</div>
+    <div class="section-title">A little about me</div>
+    <p>I'm a <strong>product manager</strong> who's learning to build with AI instead of just writing specs about it. This portfolio is where I'm tracking everything I make throughout the AI Builder program — agents, skills, workflows, all of it, as I make it. Nothing here is polished on purpose; it's a working log, not a highlight reel.</p>
+  </div>
+</section>
+
+<section id="work">
+  <div class="section-eyebrow">Work</div>
+  <div class="section-title">What I'm focused on</div>
+  <div class="work-grid">
+    <div class="work-card">
+      <div class="work-index">01</div>
+      <h3>AI Agents & Automation</h3>
+      <p>Designing and building AI agents that handle real work end-to-end, from research to execution, instead of just answering questions.</p>
+    </div>
+    <div class="work-card">
+      <div class="work-index">02</div>
+      <h3>Skills & Workflows</h3>
+      <p>Creating reusable skills and workflows that make AI tools sharper and more useful for everyday product work.</p>
+    </div>
+    <div class="work-card">
+      <div class="work-index">03</div>
+      <h3>MCP Integrations</h3>
+      <p>Connecting AI to the tools and data I actually use via the Model Context Protocol, so it can act instead of just advise.</p>
+    </div>
+  </div>
+</section>
+
+<section class="surface" id="projects">
+  <div class="inner">
+    <div class="section-eyebrow">AI Projects</div>
+    <div class="section-title">Everything I'm building</div>
+    <div class="projects-grid" id="projects-grid"></div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="inner">
+    <div>
+      <div class="footer-name">Lianne Lim</div>
+      <div class="footer-tagline">AI Builder — building throughout the program</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="mailto:liannelim3@gmail.com">liannelim3@gmail.com</a></li>
+      <li><a href="#" id="linkedin-link">LinkedIn</a></li>
+    </ul>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    <div class="modal-eyebrow" id="modal-eyebrow"></div>
+    <h3 id="modal-title"></h3>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+  function stepsHTML(steps) {
+    return '<div class="steps">' + steps.map((s, i) => `
+      <div class="step-item">
+        <div class="step-col">
+          <div class="step-num">${i + 1}</div>
+          ${i < steps.length - 1 ? '<div class="step-line"></div>' : ''}
+        </div>
+        <div class="step-text">${s}</div>
+      </div>
+    `).join('') + '</div>';
+  }
+
+  const designSystemDocsHTML = `
+    <div class="doc-section">
+      <div class="doc-label">Colors</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-chip" style="background:#000000;"></div><div class="swatch-info"><span class="swatch-name">True black (bg)</span><span class="swatch-hex">#000000</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#f5f5f7;"></div><div class="swatch-info"><span class="swatch-name">Text primary</span><span class="swatch-hex">#f5f5f7</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#86868b;"></div><div class="swatch-info"><span class="swatch-name">Text secondary</span><span class="swatch-hex">#86868b</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#0071e3;"></div><div class="swatch-info"><span class="swatch-name">Fixed CTA blue (actions only)</span><span class="swatch-hex">#0071e3</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#7c3aed;"></div><div class="swatch-info"><span class="swatch-name">Hero accent — start (swappable)</span><span class="swatch-hex">#7c3aed</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#4338ca;"></div><div class="swatch-info"><span class="swatch-name">Hero accent — end (swappable)</span><span class="swatch-hex">#4338ca</span></div></div>
+      </div>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">Typography</div>
+      <div class="type-sample">
+        <div style="font-family:var(--font-display); font-size:34px; font-weight:800; letter-spacing:-0.02em; line-height:0.98; background:var(--gradient-hero); -webkit-background-clip:text; background-clip:text; color:transparent;">Wordmark</div>
+        <div class="type-spec">clamp(3.2rem,9vw,6.4rem) · weight 800 · gradient-filled (violet → indigo) · used once, for the hero only</div>
+      </div>
+      <div class="type-sample">
+        <div style="font-family:var(--font-text); font-size:18px; font-weight:400; color:var(--color-text-tertiary);">Body / subhead copy</div>
+        <div class="type-spec">16–19px · weight 400 · text-tertiary or text-secondary · never pure white</div>
+      </div>
+      <div class="type-sample">
+        <div style="font-family:var(--font-text); font-size:13px; font-weight:500; color:var(--color-text-secondary);">UI text — nav, labels, meta</div>
+        <div class="type-spec">12–14px · weight 500 · quiet and gray, not shouty</div>
+      </div>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">Layout Principles</div>
+      <ul class="principle-list">
+        <li>True black hero, full-bleed, one dominant gradient wordmark and nothing else competing for attention</li>
+        <li>Alternate true-black and near-black (#1d1d1f) sections for quiet rhythm</li>
+        <li>~95% of the page reads as quiet system type — the gradient wordmark is the one dramatic exception</li>
+        <li>Color-as-thread — the hero accent recurs in borders, badges, and glows across the page</li>
+        <li>The fixed CTA blue is reserved exclusively for the one primary action button, never used decoratively</li>
+        <li>Minimal hero copy — name, one status line, one CTA, nothing more</li>
+      </ul>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">Vibe</div>
+      <div class="vibe-tags">
+        <span class="vibe-tag">cinematic</span>
+        <span class="vibe-tag">precision</span>
+        <span class="vibe-tag">bold</span>
+        <span class="vibe-tag">immersive</span>
+        <span class="vibe-tag">premium</span>
+      </div>
+    </div>
+  `;
+
+  const portfolioDocsHTML = `
+    <div class="doc-section">
+      <div class="doc-label">Techniques Used</div>
+      <ul class="tech-list">
+        <li>Read the design skill file before writing any CSS, then translated its tokens into CSS custom properties</li>
+        <li>Single self-contained HTML file — no build step, no separate CSS or JS files</li>
+        <li>Project cards generated from a JS data array instead of duplicated markup</li>
+        <li>Lightweight vanilla JS modal system for "How I Built This" and "Documentation" popups</li>
+        <li>Interview-first process — answered questions about content and style before any code was written</li>
+        <li>Swapped design skills mid-project — reread the new skill file, remapped every color token, and restyled the whole site in one pass without touching the content or structure</li>
+      </ul>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">Key Prompts</div>
+      <div class="prompt-list">
+        <div class="prompt-item">"Build me a complete portfolio website as a single self-contained HTML file. Interview me about any information you don't have before building."</div>
+        <div class="prompt-item">"Use Claude in Chrome to extract the design elements from an inspiration website, then use /skill-creator to turn it into a reusable skill."</div>
+        <div class="prompt-item">"Read [my design skill] before writing any CSS."</div>
+        <div class="prompt-item">"Actually I want to change the design skill used. Can you use [a different design skill] instead?"</div>
+      </div>
+    </div>
+  `;
+
+  const voiceGuideDocsHTML = `
+    <div class="doc-section">
+      <div class="doc-label">The 8 Sections</div>
+      <ul class="tech-list">
+        <li>Core Identity</li>
+        <li>Registers</li>
+        <li>Sentence Patterns</li>
+        <li>Rhetorical Moves</li>
+        <li>Emotional Register</li>
+        <li>Do's and Don'ts</li>
+        <li>Quick Reference</li>
+        <li>Calibration Tests</li>
+      </ul>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">Build Your Own</div>
+      <div class="prompt-list">
+        <div class="prompt-item">"Pull my 40 most recently sent emails. Analyze my tone, registers, sentence patterns, rhetorical moves, and emotional register across them. Then write a structured 8-section voice guide covering Core Identity, Registers, Sentence Patterns, Rhetorical Moves, Emotional Register, Do's and Don'ts, Quick Reference, and Calibration Tests. Save it as a skill so any AI tool can write in my voice on demand."</div>
+      </div>
+    </div>
+  `;
+
+  const emailManagerDocsHTML = `
+    <div class="doc-section">
+      <div class="doc-label">Skill Instructions</div>
+      <ul class="tech-list">
+        <li>Connects to Gmail and scans the inbox each morning</li>
+        <li>Filters out noise — newsletters, notifications, anything that doesn't need a response</li>
+        <li>Prioritizes what's left by urgency and who it's from</li>
+        <li>Drafts replies using the Voice Guide skill so they sound like me, not a bot</li>
+        <li>Leaves drafts in Gmail for review — never sends automatically</li>
+      </ul>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">Scheduled Task Setup</div>
+      <ul class="tech-list">
+        <li>Runs every weekday morning on a fixed schedule</li>
+        <li>Triages the inbox and surfaces what actually needs a reply</li>
+        <li>Generates draft replies in-voice for anything that needs one</li>
+        <li>Delivers a short morning summary instead of a wall of raw email</li>
+      </ul>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">Build Your Own</div>
+      <div class="prompt-list">
+        <div class="prompt-item">"Connect Gmail to Claude, then build an email-manager skill that filters noise and prioritizes what matters in my inbox. Wire it to my voice-guide skill so any drafted replies sound like me. Wrap the whole thing in a scheduled task that runs every morning and gives me a short triage summary plus draft replies to review."</div>
+      </div>
+    </div>
+  `;
+
+  const projects = [
+    {
+      title: "Design System Skill",
+      desc: "A reusable skill that keeps every design decision on-brand automatically.",
+      status: "Live",
+      howBuilt: stepsHTML([
+        "Found an inspiration website",
+        "Used Claude in Chrome to extract the design elements",
+        "Used /skill-creator to turn it into a reusable skill",
+        "Now it works everywhere — swap between skills like /apple-website-design or /apple-iphone-17-pro-design and every build matches that system automatically"
+      ]),
+      docs: designSystemDocsHTML
+    },
+    {
+      title: "Portfolio Website",
+      desc: "This site — a living record of everything built in the AI Builder program.",
+      status: "Live",
+      howBuilt: stepsHTML([
+        "Started with a simple scaffolded HTML page",
+        "Applied my design system skill to style it",
+        "Claude interviewed me to fill in real content",
+        "Built out project cards as I completed each AI Builder session"
+      ]),
+      docs: portfolioDocsHTML
+    },
+    {
+      title: "Voice Guide Skill",
+      desc: "A psychological profile of how I write, turned into an AI skill any tool can use.",
+      status: "Live",
+      howBuilt: stepsHTML([
+        "Pulled my 40 most recent sent emails",
+        "Used Claude to analyze tone, registers, sentence patterns, and rhetorical moves",
+        "Generated a structured 8-section voice guide",
+        "Saved it as a humanize-writing skill so Claude can write in my voice on any task"
+      ]),
+      docs: voiceGuideDocsHTML
+    },
+    {
+      title: "Email Manager Scheduled Task",
+      desc: "A scheduled task that triages my inbox every morning and drafts replies in my voice.",
+      status: "Live",
+      howBuilt: stepsHTML([
+        "Connected Gmail to Claude",
+        "Built an email-manager skill that filters noise and prioritizes what matters",
+        "Wired it to my voice guide skill so drafts sound like me",
+        "Wrapped it in a scheduled task that runs every morning"
+      ]),
+      docs: emailManagerDocsHTML
+    },
+    { title: "Custom Workflow", desc: "A tailored multi-step workflow built for a recurring piece of PM work.", status: "Coming Soon" },
+    { title: "Spreadsheet Analysis", desc: "AI-assisted analysis that turns messy spreadsheets into clear answers.", status: "Coming Soon" },
+    { title: "Data Analysis Presentation", desc: "A data story built and presented with AI doing the heavy lifting.", status: "Coming Soon" },
+    { title: "File Organization Process", desc: "A system for keeping files organized without me lifting a finger.", status: "Coming Soon" },
+    { title: "AI Context File", desc: "A context file that gives AI the background it needs to actually help.", status: "Coming Soon" },
+    { title: "Skills Library", desc: "A growing library of reusable skills built throughout the program.", status: "Coming Soon" }
+  ];
+
+  const grid = document.getElementById('projects-grid');
+  grid.innerHTML = projects.map((p, i) => `
+    <div class="project-card${p.status === 'Live' ? ' completed' : ''}">
+      ${p.status ? `<span class="project-status${p.status === 'Live' ? ' live' : ''}">${p.status}</span>` : ''}
+      <h3>${p.title}</h3>
+      <p class="desc">${p.desc}</p>
+      <div class="project-links">
+        <button data-index="${i}" data-type="built">How I Built This</button>
+        <button data-index="${i}" data-type="docs">Documentation</button>
+      </div>
+    </div>
+  `).join('');
+
+  const overlay = document.getElementById('modal-overlay');
+  const modalEyebrow = document.getElementById('modal-eyebrow');
+  const modalTitle = document.getElementById('modal-title');
+  const modalBody = document.getElementById('modal-body');
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-index]');
+    if (btn) {
+      const p = projects[parseInt(btn.dataset.index, 10)];
+      const isBuilt = btn.dataset.type === 'built';
+      modalEyebrow.textContent = isBuilt ? "How I Built This" : "Documentation";
+      modalTitle.textContent = p.title;
+      const content = isBuilt ? p.howBuilt : p.docs;
+      modalBody.innerHTML = content
+        ? content
+        : `<p class="placeholder">Content coming soon — check back as this project takes shape.</p>`;
+      overlay.classList.add('open');
+    }
+  });
+
+  function closeModal() { overlay.classList.remove('open'); }
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+</script>
+
+</body>
+</html>
