@@ -924,6 +924,58 @@
     </div>
   `;
 
+  const spreadsheetAnalysisDocsHTML = `
+    <div class="doc-section">
+      <div class="doc-label">The Dataset I Used</div>
+      <ul class="tech-list">
+        <li>A real, messy spreadsheet — mixed data types, missing values, no formulas set up ahead of time</li>
+        <li>Left the raw data untouched and let Claude propose which computed columns would actually be useful before writing anything</li>
+      </ul>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">The Two Charts I Picked</div>
+      <ul class="tech-list">
+        <li>A comparison chart showing how the key metric stacked up across categories</li>
+        <li>A chart surfacing the outliers and standouts once the computed columns were in place</li>
+      </ul>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">Prompt Chain — Run This On Any Spreadsheet</div>
+      <div class="prompt-list">
+        <div class="prompt-item">"Load this spreadsheet and give me an overview: what's in it, what's missing, and what computed columns would make it more useful?"</div>
+        <div class="prompt-item">"Write the formulas for those computed columns and run them across the full dataset."</div>
+        <div class="prompt-item">"Build two charts directly in the sheet that would help me understand this data at a glance."</div>
+        <div class="prompt-item">"What are the most interesting patterns or outliers here? Surface anything I'd want to know before making a decision."</div>
+      </div>
+    </div>
+  `;
+
+  const dataPresentationDocsHTML = `
+    <div class="doc-section">
+      <div class="doc-label">The Outline I Started With</div>
+      <ul class="tech-list">
+        <li>An opening slide with the core thesis, stated plainly, before any design work started</li>
+        <li>A few slides building the evidence, one idea per slide, in the order that made the argument land</li>
+        <li>A closing slide with the takeaway and what to do with it</li>
+      </ul>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">Design Choices That Made It Feel Like Mine</div>
+      <ul class="tech-list">
+        <li>Ran the deck through my design system skill instead of a generic template, so it matches the same violet/indigo system as the rest of this site</li>
+        <li>One chart or stat per slide, max — no crowded slides</li>
+        <li>Every number traced back to its source data, cited right on the slide</li>
+        <li>Wrote for the actual audience the deck was for, instead of a generic exec summary</li>
+      </ul>
+    </div>
+    <div class="doc-section">
+      <div class="doc-label">Prompt to Reuse</div>
+      <div class="prompt-list">
+        <div class="prompt-item">"Here's my analysis. Help me outline a slide deck that tells the story before we design anything — what's the thesis, what's the slide-by-slide flow, and what visual does each slide need? Then build it in Claude Design using [my design skill], and export it as PDF/PowerPoint/HTML so I can share it."</div>
+      </div>
+    </div>
+  `;
+
   const projects = [
     {
       title: "Design System Skill",
@@ -974,8 +1026,30 @@
       docs: emailManagerDocsHTML
     },
     { title: "Custom Workflow", desc: "A tailored multi-step workflow built for a recurring piece of PM work.", status: "Coming Soon" },
-    { title: "Spreadsheet Analysis", desc: "AI-assisted analysis that turns messy spreadsheets into clear answers.", status: "Coming Soon" },
-    { title: "Data Analysis Presentation", desc: "A data story built and presented with AI doing the heavy lifting.", status: "Coming Soon" },
+    {
+      title: "Spreadsheet Analysis",
+      desc: "Used Claude to clean, calculate, visualize, and surface insights from a real dataset - no formulas required.",
+      status: "Live",
+      howBuilt: stepsHTML([
+        "Loaded a spreadsheet into Claude",
+        "Asked for an overview and recommended computed columns",
+        "Had Claude write the formulas and run them",
+        "Built two data visualizations directly in the sheet",
+        "Asked for the most interesting patterns and outliers"
+      ]),
+      docs: spreadsheetAnalysisDocsHTML
+    },
+    {
+      title: "Data Analysis Presentation",
+      desc: "Took a raw dataset and shipped a polished, shareable slide deck - all in one session.",
+      status: "Live",
+      howBuilt: stepsHTML([
+        "Outlined the story with Claude before designing",
+        "Built the deck in Claude Design (or Cowork) using my design skill",
+        "Exported as PDF/PowerPoint/HTML and shared it"
+      ]),
+      docs: dataPresentationDocsHTML
+    },
     { title: "File Organization Process", desc: "A system for keeping files organized without me lifting a finger.", status: "Coming Soon" },
     { title: "AI Context File", desc: "A context file that gives AI the background it needs to actually help.", status: "Coming Soon" },
     { title: "Skills Library", desc: "A growing library of reusable skills built throughout the program.", status: "Coming Soon" }
